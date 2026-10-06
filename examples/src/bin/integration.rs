@@ -7,9 +7,11 @@ use async_native_tls::TlsConnector;
 use async_smtp::{SendableEmail, SmtpClient, SmtpTransport};
 #[cfg(feature = "runtime-async-std")]
 use async_std::{net::TcpStream, task, task::sleep};
+#[cfg(feature = "runtime-async-std")]
+use futures_util::io::BufReader;
 use futures_util::{StreamExt, TryStreamExt};
 #[cfg(feature = "runtime-tokio")]
-use tokio::{net::TcpStream, task, time::sleep};
+use tokio::{io::BufReader, net::TcpStream, task, time::sleep};
 
 fn tls() -> TlsConnector {
     TlsConnector::new()
@@ -57,12 +59,14 @@ async fn _connect_insecure_then_secure() -> Result<()> {
     Ok(())
 }
 
-async fn smtp(user: &str) -> Result<SmtpTransport<async_native_tls::TlsStream<TcpStream>>> {
+async fn smtp(
+    user: &str,
+) -> Result<SmtpTransport<BufReader<async_native_tls::TlsStream<TcpStream>>>> {
     let host = test_host();
     let tcp_stream = TcpStream::connect((host.as_str(), 3465)).await?;
 
     let tls = tls();
-    let tls_stream = tls.connect("localhost", tcp_stream).await?;
+    let tls_stream = BufReader::new(tls.connect("localhost", tcp_stream).await?);
     let client = SmtpClient::new().smtp_utf8(true);
     let mut transport = SmtpTransport::new(client, tls_stream).await?;
     let credentials =

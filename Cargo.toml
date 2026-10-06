@@ -27,24 +27,24 @@ runtime-async-std = ["async-std", "async-compression?/futures-io"]
 runtime-tokio = ["tokio", "async-compression?/tokio"]
 
 [dependencies]
-async-channel = "2.0.0"
-async-compression = { version = "0.4.15", default-features = false, features = ["deflate"], optional = true }
-async-std = { version = "1.8.0", default-features = false, features = ["std", "unstable"], optional = true }
+async-channel = "2.5.0"
+async-compression = { version = "0.4.50", default-features = false, features = ["deflate"], optional = true }
+async-std = { version = "1.13.2", default-features = false, features = ["std", "unstable"], optional = true }
 base64 = { version = "0.23.1", default-features = false, features = ["std"] }
-bytes = "1"
-chrono = { version = "0.4", default-features = false, features = ["std"] }
-futures-util = {version = "0.3.15", features = ["io"] }
-imap-proto = "0.17"
-log = "0.4.8"
-nom = "8.0"
-pin-project = "1"
-pin-utils = "0.1.0-alpha.4"
-self_cell = "1.0.1"
-stop-token = "0.7"
-thiserror = "1.0.9"
-tokio = { version = "1", features = ["sync", "time", "io-util"], optional = true }
+bytes = "1.12.1"
+chrono = { version = "0.4.45", default-features = false, features = ["std"] }
+futures-util = { version = "0.3.34", features = ["io"] }
+imap-proto = "0.17.0"
+log = "0.4.34"
+nom = "8.0.0"
+pin-project = "1.1.13"
+pin-utils = "0.1.1"
+self_cell = "1.3.0"
+stop-token = "0.7.0"
+thiserror = "2.0.21"
+tokio = { version = "1.53.2", features = ["sync", "time", "io-util"], optional = true }
 
 [dev-dependencies]
-async-std = { version = "1.8.0", features = ["std", "attributes"] }
-pretty_assertions = "1.2"
-tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
+async-std = { version = "1.13.2", features = ["std", "attributes"] }
+pretty_assertions = "1.4.1"
+tokio = { version = "1.53.2", features = ["rt-multi-thread", "macros", "net"] }

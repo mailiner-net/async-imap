@@ -66,9 +66,12 @@ pub struct IdleStream<'a, St> {
 
 impl<St: Unpin> Unpin for IdleStream<'_, St> {}
 
+#[allow(deprecated)] // pin-utils 0.1.1 deprecates `unsafe_pinned!`
 impl<'a, St: Stream + Unpin> IdleStream<'a, St> {
     unsafe_pinned!(stream: &'a mut St);
+}
 
+impl<'a, St: Stream + Unpin> IdleStream<'a, St> {
     pub(crate) fn new(stream: &'a mut St) -> Self {
         IdleStream { stream }
     }
@@ -109,9 +112,12 @@ impl<T: Read + Write + Unpin + fmt::Debug> AsMut<T> for Handle<T> {
     }
 }
 
+#[allow(deprecated)] // pin-utils 0.1.1 deprecates `unsafe_pinned!`
 impl<T: Read + Write + Unpin + fmt::Debug + Send> Handle<T> {
     unsafe_pinned!(session: Session<T>);
+}
 
+impl<T: Read + Write + Unpin + fmt::Debug + Send> Handle<T> {
     pub(crate) fn new(session: Session<T>) -> Handle<T> {
         Handle { session, id: None }
     }

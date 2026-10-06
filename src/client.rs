@@ -343,9 +343,12 @@ impl<T: Read + Write + Unpin + fmt::Debug + Send> Client<T> {
     }
 }
 
+#[allow(deprecated)] // pin-utils 0.1.1 deprecates `unsafe_pinned!`
 impl<T: Read + Write + Unpin + fmt::Debug + Send> Session<T> {
     unsafe_pinned!(conn: Connection<T>);
+}
 
+impl<T: Read + Write + Unpin + fmt::Debug + Send> Session<T> {
     pub(crate) fn get_stream(self: Pin<&mut Self>) -> Pin<&mut ImapStream<T>> {
         self.conn().stream()
     }
@@ -1395,9 +1398,12 @@ impl<T: Read + Write + Unpin + fmt::Debug + Send> Session<T> {
     }
 }
 
+#[allow(deprecated)] // pin-utils 0.1.1 deprecates `unsafe_pinned!`
 impl<T: Read + Write + Unpin + fmt::Debug> Connection<T> {
     unsafe_pinned!(stream: ImapStream<T>);
+}
 
+impl<T: Read + Write + Unpin + fmt::Debug> Connection<T> {
     /// Gets a reference to the underlying stream.
     pub fn get_ref(&self) -> &T {
         self.stream.get_ref()
